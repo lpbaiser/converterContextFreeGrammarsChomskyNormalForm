@@ -1,31 +1,26 @@
 
 package Model;
 
+import java.util.HashMap;
+
 /**
  *
  * @author leonardo
  */
 public class Linguagem {
     
-    private String[] alfabeto; //cada posição do array contém uma letra do alfabeto
-    private String[] producoes; //cada posição do array contém uma produçao
+    private String[] variaveis; //cada posição do array contém uma letra do alfabeto
+    private String variavelIncial;
+    private HashMap<String, String> producoes = new HashMap<>();
     private int qtdeLtrAlfabeto = 0;
     private int qtdeProducoes = 0;
 
-    public String[] getAlfabeto() {
-        return alfabeto;
+    public String[] getVariaveis() {
+        return variaveis;
     }
 
-    public void setAlfabeto(String[] alfabeto) {
-        this.alfabeto = alfabeto;
-    }
-
-    public String[] getProducoes() {
-        return producoes;
-    }
-
-    public void setProducoes(String producoes) {
-        this.producoes[this.qtdeProducoes] = producoes;
+    public void setVariaveis(String[] alfabeto) {
+        this.variaveis = alfabeto;
     }
 
     public int getQtdeLtrAlfabeto() {
@@ -47,6 +42,26 @@ public class Linguagem {
     public void incQtdeProducoes(){
         this.qtdeProducoes ++;
     }
+
+    public String getVariavelIncial() {
+        return variavelIncial;
+    }
+
+    public void setVariavelIncial(String variavelIncial) {
+        this.variavelIncial = variavelIncial;
+    }
+
+    public HashMap<String, String> getProducoes() {
+        return producoes;
+    }
+
+    public void setProducoes(HashMap<String, String> producoes) {
+        this.producoes = producoes;
+    }
+    
+    
+    
+    
     
     
 }

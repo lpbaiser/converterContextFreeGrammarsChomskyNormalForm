@@ -13,19 +13,30 @@ import java.util.List;
  */
 public class Producao {
 
-    Simbolo simbolo;
-    List<Simbolo> corpo;
+    private Simbolo cabeca;
+    private List<Simbolo> corpo;
 
-    boolean isAnulavel() {
-        return corpo.get(0).equals("&");
+    public boolean isAnulavel() {
+        return corpo.get(0).getVariavel() == '&';
     }
 
-    boolean isAnulavel(List<Simbolo> simbolos) {
-        return corpo.get(0).equals("&");
+    public boolean isAnulavel(List<Simbolo> simbolos) {
+        if (simbolos == null || simbolos.isEmpty()) {
+            return isAnulavel();
+        }
+        if (isAnulavel()) {
+            return true;
+        }
+        for (Simbolo simbolo : corpo) {
+            if (!simbolos.contains(simbolo)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    Simbolo getSimbolo() {
-        return simbolo;
+    public Simbolo getCabeca() {
+        return cabeca;
     }
 
     public List<Simbolo> getCorpo() {
@@ -36,8 +47,8 @@ public class Producao {
         this.corpo = corpo;
     }
 
-    public void setSimbolo(Simbolo simbolo) {
-        this.simbolo = simbolo;
+    public void setCabeca(Simbolo cabeca) {
+        this.cabeca = cabeca;
     }
 
 }

@@ -27,4 +27,8 @@ public class Simbolo {
         return variavel;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return ((Simbolo) obj).terminal == this.terminal && ((Simbolo) obj).variavel == this.variavel;
+    }
 }

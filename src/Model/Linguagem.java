@@ -12,33 +12,30 @@ public class Linguagem {
     private Simbolo[] variaveis; //cada posição do array contém uma letra do alfabeto
     private Simbolo variavelIncial;
     private List<Producao> producoes;
-
-    public void setProducoes(List<Producao> producoes) {
-        this.producoes = producoes;
-    }
+    private List<Simbolo> simbolosAnulaveis;
 
     public List<Producao> getProducoes() {
         return producoes;
+    }
+
+    public void setProducoes(List<Producao> producoes) {
+        this.producoes = producoes;
     }
 
     public Simbolo[] getVariaveis() {
         return variaveis;
     }
 
-    public void eliminarProducoesVazias() {
+    public void setVariaveis(Simbolo[] variaveis) {
+        this.variaveis = variaveis;
+    }
 
-        //encontrar variáveis anuláveis
-        //procurar epsilon
-        List<Simbolo> simbolosAnulaveis = new ArrayList<>();
-//        while (simbolosAnulaveis.size()) {
-//            List<Simbolo> simbolosAnulaveis = new ArrayList<>();
-        for (Producao producao : producoes) {
-            if (producao.isAnulavel()) {
-                simbolosAnulaveis.add(producao.getSimbolo());
-//            producao.isAnulavel(simbolosAnulaveis);
-            }
+    public Simbolo getVariavelIncial() {
+        return variavelIncial;
+    }
 
-        }
+    public void setVariavelIncial(Simbolo variavelInicial) {
+        this.variavelIncial = variavelInicial;
     }
 
     public boolean variaveisContains(char simbolo) {
@@ -50,15 +47,47 @@ public class Linguagem {
         return false;
     }
 
-    public Simbolo getVariavelIncial() {
-        return variavelIncial;
+    private void atualizarSimbolosAnulaveis() {
+        for (Producao producao : producoes) {
+            if (producao.isAnulavel(simbolosAnulaveis)) {
+                //contains utiliza a sobrescrita do método equals?
+                //http://www.matera.com/br/2015/01/15/desvendando-os-metodos-equals-e-hascode/
+                //aparentemente sim
+                if (!simbolosAnulaveis.contains(producao.getCabeca())) {
+                    simbolosAnulaveis.add(producao.getCabeca());
+                }
+            }
+        }
     }
 
-    public void setVariaveis(Simbolo[] variaveis) {
-        this.variaveis = variaveis;
-    }
+    //procurar epsilon
+    //encontrar variáveis anuláveis
+    public void eliminarProducoesVazias() {
+        simbolosAnulaveis = new ArrayList<>();
+        int tamanhoAnterior;
+        do {
+            tamanhoAnterior = simbolosAnulaveis.size();
+            atualizarSimbolosAnulaveis();
+        } while (tamanhoAnterior < simbolosAnulaveis.size());
 
-    public void setVariavelIncial(Simbolo variavelInicial) {
-        this.variavelIncial = variavelInicial;
+        //percorrer todas producoes
+        //verificar se contém um simbolo anulável em seu corpo
+        //caso contenha, verificar quantos
+        //obter quantos simbolos são nulos
+        //se apenas um, removê-lo localmente e criar uma produção sem ele
+        Producao producao;
+        for (int i = 0; i < producoes.size(); i++) {
+            producao = producoes.get(i);
+            if (producao.isAnulavel()) {
+                //remove epsilon
+                producoes.remove(producao);
+            } else {
+                for (Simbolo simbolo : producao.getCorpo()) {
+                    simbolosAnulaveis.contains(simbolo);
+                     //remover simbolo
+                     //criar cópia da producao
+                }
+            }
+        }
     }
 }

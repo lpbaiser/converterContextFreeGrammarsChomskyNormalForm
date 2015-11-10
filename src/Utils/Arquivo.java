@@ -26,6 +26,7 @@ public class Arquivo {
         String linha;
 
         linguagem = new Linguagem();
+
         try {
             fileRead = new FileReader(path);
             buffArquivo = new BufferedReader(fileRead);
@@ -48,16 +49,18 @@ public class Arquivo {
             Producao producao;
             List<Simbolo> corpo;
             List<Producao> producoes = new ArrayList<>();
+            String strCorpo;
+
             while (linha != null) {
-                String[] p = linha.split(" ");
+                String[] strProducao = linha.split(" ");
                 producao = new Producao();
-                producao.setSimbolo(new Simbolo(true, p[0].charAt(0)));
+                producao.setCabeca(new Simbolo(true, strProducao[0].charAt(0)));
 
                 corpo = new ArrayList<>();
-                String string;
-                for (int i = 0; i < p[1].length(); i++) {
-                    string = p[1];
-                    corpo.add(new Simbolo(linguagem.variaveisContains(string.charAt(i)), string.charAt(i)));
+                strCorpo = strProducao[1];
+                strCorpo = strCorpo.replace("epsilon", "&");
+                for (int i = 0; i < strCorpo.length(); i++) {
+                    corpo.add(new Simbolo(linguagem.variaveisContains(strCorpo.charAt(i)), strCorpo.charAt(i)));
                 }
                 producao.setCorpo(corpo);
                 producoes.add(producao);

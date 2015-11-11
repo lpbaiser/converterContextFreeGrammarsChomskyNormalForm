@@ -5,6 +5,8 @@
  */
 package Model;
 
+import java.util.List;
+
 /**
  *
  * @author romulo
@@ -25,6 +27,16 @@ public class Simbolo {
 
     public char getVariavel() {
         return variavel;
+    }
+    
+    public boolean isTerminal(List<Simbolo> simbolos){
+        boolean b = true;
+        for (Simbolo simbolo : simbolos) {
+            if (!simbolo.terminal){
+                b = false;
+            }
+        }
+        return b;
     }
 
     @Override

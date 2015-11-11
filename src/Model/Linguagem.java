@@ -97,7 +97,7 @@ public class Linguagem {
         for (Producao producao : producoes) {
             simbolos = producao.getCorpo();
             for (Simbolo simbolo : simbolos) {
-                if (simbolo.isTerminal() && !simbolosTerminais.contains(producao)) {
+                if (simbolo.isTerminal(simbolos) && !simbolosTerminais.contains(producao)) {
                     simbolosTerminais.add(producao);
                 }
             }

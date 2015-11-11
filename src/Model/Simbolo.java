@@ -31,4 +31,9 @@ public class Simbolo {
     public boolean equals(Object obj) {
         return ((Simbolo) obj).terminal == this.terminal && ((Simbolo) obj).variavel == this.variavel;
     }
+
+    @Override
+    protected Object clone() {
+        return new Simbolo(terminal, variavel);
+    }
 }

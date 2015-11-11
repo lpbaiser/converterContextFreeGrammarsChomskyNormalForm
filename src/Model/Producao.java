@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,18 @@ public class Producao {
 
     public void setCabeca(Simbolo cabeca) {
         this.cabeca = cabeca;
+    }
+
+    @Override
+    public Object clone() {
+        Producao producao = new Producao();
+        producao.setCabeca((Simbolo) cabeca.clone());
+        List<Simbolo> corpo = new ArrayList<>();
+        for (Simbolo simbolo : this.corpo) {
+            corpo.add((Simbolo) simbolo.clone());
+        }
+        producao.setCorpo(corpo);
+        return producao;
     }
 
 }

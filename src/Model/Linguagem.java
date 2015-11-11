@@ -76,18 +76,38 @@ public class Linguagem {
         //obter quantos simbolos são nulos
         //se apenas um, removê-lo localmente e criar uma produção sem ele
         Producao producao;
+        Producao clone;
         for (int i = 0; i < producoes.size(); i++) {
             producao = producoes.get(i);
             if (producao.isAnulavel()) {
                 //remove epsilon
                 producoes.remove(producao);
+                i--;
             } else {
                 for (Simbolo simbolo : producao.getCorpo()) {
-                    simbolosAnulaveis.contains(simbolo);
-                     //remover simbolo
-                     //criar cópia da producao
+                    if (simbolosAnulaveis.contains(simbolo)) {
+                        clone = (Producao) producao.clone();
+                        clone.getCorpo().remove(simbolo);
+                        if (!clone.getCorpo().isEmpty()) {
+                            producoes.add(clone);
+                        }
+                    }
+                    //remover simbolo
+                    //criar cópia da producao
                 }
             }
         }
     }
+
+    public void imprimir() {
+        System.out.println();
+        for (Producao producao : producoes) {
+            System.out.print(producao.getCabeca().getVariavel() + " -> ");
+            for (Simbolo simbolo : producao.getCorpo()) {
+                System.out.print(simbolo.getVariavel());
+            }
+            System.out.println();
+        }
+    }
+
 }

@@ -47,12 +47,13 @@ public class Linguagem {
         return false;
     }
 
+    /**
+     * Varre todas as produções a procura de símbolos anuláveis
+     */
     private void atualizarSimbolosAnulaveis() {
         for (Producao producao : producoes) {
             if (producao.isAnulavel(simbolosAnulaveis)) {
-                //contains utiliza a sobrescrita do método equals?
-                //http://www.matera.com/br/2015/01/15/desvendando-os-metodos-equals-e-hascode/
-                //aparentemente sim
+                //contains utiliza a sobrescrita do método equals
                 if (!simbolosAnulaveis.contains(producao.getCabeca())) {
                     simbolosAnulaveis.add(producao.getCabeca());
                 }
@@ -60,9 +61,12 @@ public class Linguagem {
         }
     }
 
-    //procurar epsilon
-    //encontrar variáveis anuláveis
+    /**
+     * Procura os simbolos anuláveis até estabilizar Remove as produções vazias
+     * Adiciona as produções que representam o epsilon
+     */
     public void eliminarProducoesVazias() {
+        //Encontrar todos os símbolos anuláveis
         simbolosAnulaveis = new ArrayList<>();
         int tamanhoAnterior;
         do {
@@ -72,9 +76,9 @@ public class Linguagem {
 
         //percorrer todas producoes
         //verificar se contém um simbolo anulável em seu corpo
-        //caso contenha, verificar quantos
-        //obter quantos simbolos são nulos
-        //se apenas um, removê-lo localmente e criar uma produção sem ele
+        //caso contenha, clonar, remover o símbolo do clone e adicioná-lo à lista de produções
+        //Para os unitários, ao removê-lo, eles não são adicionados, por ter corpo vazio
+        //Para as produções cujo corpo tem mais de um símbolo anulável, este será naturalmente processado ao fim da lista
         Producao producao;
         Producao clone;
         for (int i = 0; i < producoes.size(); i++) {
@@ -92,11 +96,20 @@ public class Linguagem {
                             producoes.add(clone);
                         }
                     }
-                    //remover simbolo
-                    //criar cópia da producao
                 }
             }
         }
+    }
+
+    /**
+     * Encontrar produções cujo corpo contém apenas símbolos terminais
+     * Manter uma lista dessas variáveis
+     * Fazer a indução das variáveis se o corpo contiver algum item pertencente à lista de variáveis (até estabilizar)
+     * Preciso obter todas as produções de uma mesma cabeça para induzir?
+     * Remover todas as produções que não estiverem na lista de variáveis úteis
+     */
+    public void eliminarVariaveisInuteis() {
+
     }
 
     public void imprimir() {

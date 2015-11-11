@@ -21,6 +21,11 @@ public class Producao {
         return corpo.get(0).getVariavel() == '&';
     }
 
+    /**
+     * Realiza a indução através do parâmetro
+     * @param simbolos todos os símbolos anuláveis. Constata se o corpo é anulável, e realiza a indução
+     * @return 
+     */
     public boolean isAnulavel(List<Simbolo> simbolos) {
         if (simbolos == null || simbolos.isEmpty()) {
             return isAnulavel();

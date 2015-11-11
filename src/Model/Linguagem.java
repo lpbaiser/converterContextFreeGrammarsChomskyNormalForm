@@ -13,6 +13,7 @@ public class Linguagem {
     private Simbolo variavelIncial;
     private List<Producao> producoes;
     private List<Simbolo> simbolosAnulaveis;
+    private List<Producao> simbolosTerminais;
 
     public List<Producao> getProducoes() {
         return producoes;
@@ -85,9 +86,28 @@ public class Linguagem {
                 for (Simbolo simbolo : producao.getCorpo()) {
                     simbolosAnulaveis.contains(simbolo);
                      //remover simbolo
-                     //criar cópia da producao
+                    //criar cópia da producao
                 }
             }
         }
     }
+
+    public void procuraSimbolosUnitarios() {
+        List<Simbolo> simbolos;
+        for (Producao producao : producoes) {
+            simbolos = producao.getCorpo();
+            for (Simbolo simbolo : simbolos) {
+                if (simbolo.isTerminal() && !simbolosTerminais.contains(producao)) {
+                    simbolosTerminais.add(producao);
+                }
+            }
+        }
+    }
+
+    public void eliminarProducoesUnitarias() {
+        simbolosTerminais = new ArrayList<>();
+        procuraSimbolosUnitarios();
+
+    }
+
 }

@@ -35,6 +35,17 @@ public class Producao {
         return true;
     }
 
+//    public boolean isUnitary(Linguagem linguagem) {
+//        for (int i = 0; i < linguagem.getVariaveis().length; i++) {
+//            if ()
+//        }
+//        return corpo.contains(l.getVariaveis());
+//    }
+//
+//    public boolean isUnitary(List<Simbolo> simbolos) {
+//
+//    }
+
     public Simbolo getCabeca() {
         return cabeca;
     }

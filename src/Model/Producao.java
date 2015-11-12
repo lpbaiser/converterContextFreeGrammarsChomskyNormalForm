@@ -41,6 +41,7 @@ public class Producao {
         return true;
     }
 
+
     public Simbolo getCabeca() {
         return cabeca;
     }

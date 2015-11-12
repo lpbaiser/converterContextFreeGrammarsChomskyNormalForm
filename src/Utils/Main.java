@@ -13,11 +13,11 @@ public class Main {
         Arquivo arquivo = new Arquivo();
         Linguagem linguagem;
         
-        linguagem = arquivo.FileRead("src/Entrada/ex7.6lambda-a.txt");
+        linguagem = arquivo.FileRead("src/Entrada/ex7.6unit-a.txt");
         System.out.println("Variável Inicial: " + linguagem.getVariavelIncial().getVariavel());
 
         linguagem.imprimir();
-        linguagem.eliminarProducoesVazias();
+        linguagem.eliminarProducoesUnitarias();
         linguagem.imprimir();
     }
 

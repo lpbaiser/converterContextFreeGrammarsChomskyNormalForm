@@ -14,6 +14,7 @@ public class Linguagem {
     private List<Producao> producoes;
     private List<Simbolo> simbolosAnulaveis;
     private List<Simbolo> simbolosTerminais;
+    private List<Producao> producoesSimbolosTerminais;
 
     public List<Producao> getProducoes() {
         return producoes;
@@ -116,15 +117,32 @@ public class Linguagem {
             }
         }
     }
-
-    public void eliminarProducoesUnitarias() {
-        simbolosTerminais = new ArrayList<>();
-        procuraSimbolosTerminais();
-
+    
+    private void procuraProducoesTerminais() {
+        List<Simbolo> simbolos;
         for (Producao producao : producoes) {
-            for (Simbolo variavel : variaveis) {
-                if (producao.getCorpo().contains(variavel)) {
+            simbolos = producao.getCorpo();
+            if (producao.getCabeca().isTerminal(simbolos)) {
+                if (!producoesSimbolosTerminais.contains(producao)) {
+                    producoesSimbolosTerminais.add(producao);
+                }
+            }
+        }
+    }
+    
+    public void eliminarProducoesUnitarias() {
+        producoesSimbolosTerminais = new ArrayList<>();
+        procuraProducoesTerminais();
+        List<Simbolo> clone;
+        for (Producao producao : producoes) {
+            for (Producao producao1 : producoesSimbolosTerminais) {
+                if (producao.getCorpo().contains(producao1.getCabeca())) {
                     //trocar o simbolo terminal para o simbolo nao terminal
+                    clone = producao.getCorpo();
+                    for (Simbolo c : clone) {
+//                        if (c.getVariavel())
+                        
+                    }
                 }
 
             }

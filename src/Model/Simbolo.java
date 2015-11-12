@@ -44,6 +44,7 @@ public class Simbolo {
         }
         return true;
     }
+    
 
     @Override
     public boolean equals(Object obj) {

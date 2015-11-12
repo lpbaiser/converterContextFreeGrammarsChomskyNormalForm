@@ -152,12 +152,13 @@ public class Linguagem {
         List<Producao> producoesAlcancaveis;
         producoesAlcancaveis = new ArrayList<>();
         producoesAlcancaveis.addAll(getProducoes(variavelIncial));
-        for (Producao producao : producoesAlcancaveis) {
-            for (Simbolo simbolo : producao.getCorpo()) {
+        for (Producao producao : producoesAlcancaveis) {//runtime modification exception?
+            for (Simbolo simbolo : producao.getCorpo()) {//loop infinito A -> aA
                 producoesAlcancaveis.addAll(getProducoes(simbolo));
             }
         }
-
+        setProducoes(producoesAlcancaveis);
+        System.gc();
     }
 
     private List<Producao> getProducoes(Simbolo simbolo) {

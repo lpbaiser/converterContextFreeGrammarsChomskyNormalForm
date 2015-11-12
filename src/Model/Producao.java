@@ -5,6 +5,7 @@
  */
 package Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +21,11 @@ public class Producao {
         return corpo.get(0).getVariavel() == '&';
     }
 
+    /**
+     * Realiza a indução através do parâmetro
+     * @param simbolos todos os símbolos anuláveis. Constata se o corpo é anulável, e realiza a indução
+     * @return 
+     */
     public boolean isAnulavel(List<Simbolo> simbolos) {
         if (simbolos == null || simbolos.isEmpty()) {
             return isAnulavel();
@@ -50,6 +56,18 @@ public class Producao {
 
     public void setCabeca(Simbolo cabeca) {
         this.cabeca = cabeca;
+    }
+
+    @Override
+    public Object clone() {
+        Producao producao = new Producao();
+        producao.setCabeca((Simbolo) cabeca.clone());
+        List<Simbolo> corpo = new ArrayList<>();
+        for (Simbolo simbolo : this.corpo) {
+            corpo.add((Simbolo) simbolo.clone());
+        }
+        producao.setCorpo(corpo);
+        return producao;
     }
 
 }

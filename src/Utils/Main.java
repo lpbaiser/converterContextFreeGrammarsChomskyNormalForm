@@ -10,12 +10,15 @@ import Model.Linguagem;
 public class Main {
 
     public static void main(String[] args) {
-        Arquivo a = new Arquivo();
-        Linguagem l = new Linguagem();
-        l = a.FileRead("src/Entrada/ex7.6lambda-a.txt");
-        System.out.println("Ling; " + l.getVariavelIncial().getVariavel());
-        l.eliminarProducoesVazias();
+        Arquivo arquivo = new Arquivo();
+        Linguagem linguagem;
+        
+        linguagem = arquivo.FileRead("src/Entrada/ex7.6unit-a.txt");
+        System.out.println("Variável Inicial: " + linguagem.getVariavelIncial().getVariavel());
 
+        linguagem.imprimir();
+        linguagem.eliminarProducoesUnitarias();
+        linguagem.imprimir();
     }
 
 }

@@ -30,17 +30,21 @@ public class Simbolo {
     }
     
     public boolean isTerminal(List<Simbolo> simbolos){
-        boolean b = true;
         for (Simbolo simbolo : simbolos) {
-            if (!simbolo.terminal){
-                b = false;
+            if (simbolo.isTerminal()){
+                return false;
             }
         }
-        return b;
+        return true;
     }
 
     @Override
     public boolean equals(Object obj) {
         return ((Simbolo) obj).terminal == this.terminal && ((Simbolo) obj).variavel == this.variavel;
+    }
+
+    @Override
+    protected Object clone() {
+        return new Simbolo(terminal, variavel);
     }
 }

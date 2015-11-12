@@ -146,12 +146,12 @@ public class Linguagem {
 
         variaveisUteis = new ArrayList<>();
 
-        procuraSimbolosUnitarios();
-        this.simbolosUnitarios;
+//        procuraSimbolosUnitarios();
+//        this.simbolosUnitarios;
         for (Producao producao : producoes) {
-            if (producao.getCorpo().containsAny(this.simbolosUnitarios)) {
-                variaveisUteis.add(producao.getCabeca());
-            }
+//            if (producao.getCorpo().containsAny(this.simbolosTerminais)) {
+//                variaveisUteis.add(producao.getCabeca());
+//            }
         }
     }
 

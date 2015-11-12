@@ -28,10 +28,17 @@ public class Simbolo {
     public char getVariavel() {
         return variavel;
     }
-    
-    public boolean isTerminal(List<Simbolo> simbolos){
+
+    /**
+     * Dado uma produção, verifica se a variável deriva apenas símbolos
+     * terminais. Exemplo: cabeca.isTerminal(corpo)
+     *
+     * @param simbolos
+     * @return
+     */
+    public boolean isTerminal(List<Simbolo> simbolos) {
         for (Simbolo simbolo : simbolos) {
-            if (simbolo.isTerminal()){
+            if (!simbolo.isTerminal()) {
                 return false;
             }
         }

@@ -101,19 +101,17 @@ public class Linguagem {
             }
         }
     }
-    
+
     /**
      * Varre todas as produções a procura de símbolos terminais
      */
-    public void procuraSimbolosTerminais() {
+    private void procuraSimbolosTerminais() {
         List<Simbolo> simbolos;
         for (Producao producao : producoes) {
             simbolos = producao.getCorpo();
-            for (Simbolo simbolo : simbolos) {
-                if (simbolo.isTerminal(simbolos)) {
-                    if (!simbolosTerminais.contains(simbolo)) {
-                        simbolosTerminais.add(producao.getCabeca());
-                    }
+            if (producao.getCabeca().isTerminal(simbolos)) {
+                if (!simbolosTerminais.contains(producao.getCabeca())) {
+                    simbolosTerminais.add(producao.getCabeca());
                 }
             }
         }
@@ -122,37 +120,54 @@ public class Linguagem {
     public void eliminarProducoesUnitarias() {
         simbolosTerminais = new ArrayList<>();
         procuraSimbolosTerminais();
-        
+
         for (Producao producao : producoes) {
             for (Simbolo variavel : variaveis) {
-                if (producao.getCorpo().contains(variavel)){
+                if (producao.getCorpo().contains(variavel)) {
                     //trocar o simbolo terminal para o simbolo nao terminal
                 }
-                
+
             }
         }
-        
+
     }
 
     /**
-     * Encontrar produções cujo corpo contém apenas símbolos terminais Manter
-     * uma lista dessas variáveis Fazer a indução das variáveis se o corpo
-     * contiver algum item pertencente à lista de variáveis (até estabilizar)
      * Preciso obter todas as produções de uma mesma cabeça para induzir?
-     * Remover todas as produções que não estiverem na lista de variáveis úteis
      */
     public void eliminarVariaveisInuteis() {
-        List<Simbolo> variaveisUteis;
+        //surgem outras produções unitárias ao decorrer da etapa 2
+        simbolosTerminais = new ArrayList<>();
+        procuraSimbolosTerminais();
 
-        variaveisUteis = new ArrayList<>();
-
-        procuraSimbolosUnitarios();
-        this.simbolosUnitarios;
+        //não é preciso estabilizar, uma vez que não existem mais produções unitárias
         for (Producao producao : producoes) {
-            if (producao.getCorpo().containsAny(this.simbolosUnitarios)) {
-                variaveisUteis.add(producao.getCabeca());
+            if (!producao.isUtil(simbolosTerminais)) {
+                producoes.remove(producao);
             }
         }
+    }
+
+    public void eliminarVariaveisInalcancaveis() {
+        List<Producao> producoesAlcancaveis;
+        producoesAlcancaveis = new ArrayList<>();
+        producoesAlcancaveis.addAll(getProducoes(variavelIncial));
+        for (Producao producao : producoesAlcancaveis) {
+            for (Simbolo simbolo : producao.getCorpo()) {
+                producoesAlcancaveis.addAll(getProducoes(simbolo));
+            }
+        }
+
+    }
+
+    private List<Producao> getProducoes(Simbolo simbolo) {
+        List<Producao> producoes = new ArrayList<>();
+        for (Producao producao : this.producoes) {
+            if (producao.getCabeca().equals(simbolo)) {
+                producoes.add(producao);
+            }
+        }
+        return producoes;
     }
 
     public void imprimir() {

@@ -23,8 +23,10 @@ public class Producao {
 
     /**
      * Realiza a indução através do parâmetro
-     * @param simbolos todos os símbolos anuláveis. Constata se o corpo é anulável, e realiza a indução
-     * @return 
+     *
+     * @param simbolos todos os símbolos anuláveis. Constata se o corpo é
+     * anulável, e realiza a indução
+     * @return
      */
     public boolean isAnulavel(List<Simbolo> simbolos) {
         if (simbolos == null || simbolos.isEmpty()) {
@@ -41,6 +43,21 @@ public class Producao {
         return true;
     }
 
+    /**
+     * Verifica se é possível derivar palavras de uma produção
+     *
+     * @param variaveisUteis
+     * @return true se, de todas as variáveis do corpo da produção forem
+     * terminais ou úteis
+     */
+    public boolean isUtil(List<Simbolo> variaveisUteis) {
+        for (Simbolo simbolo : corpo) {
+            if (!(simbolo.isTerminal() || variaveisUteis.contains(simbolo))) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public Simbolo getCabeca() {
         return cabeca;

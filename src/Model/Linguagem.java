@@ -102,14 +102,24 @@ public class Linguagem {
     }
 
     /**
-     * Encontrar produções cujo corpo contém apenas símbolos terminais
-     * Manter uma lista dessas variáveis
-     * Fazer a indução das variáveis se o corpo contiver algum item pertencente à lista de variáveis (até estabilizar)
+     * Encontrar produções cujo corpo contém apenas símbolos terminais Manter
+     * uma lista dessas variáveis Fazer a indução das variáveis se o corpo
+     * contiver algum item pertencente à lista de variáveis (até estabilizar)
      * Preciso obter todas as produções de uma mesma cabeça para induzir?
      * Remover todas as produções que não estiverem na lista de variáveis úteis
      */
     public void eliminarVariaveisInuteis() {
+        List<Simbolo> variaveisUteis;
 
+        variaveisUteis = new ArrayList<>();
+
+        procuraSimbolosUnitarios();
+        this.simbolosUnitarios;
+        for (Producao producao : producoes) {
+            if (producao.getCorpo().containsAny(this.simbolosUnitarios)) {
+                variaveisUteis.add(producao.getCabeca());
+            }
+        }
     }
 
     public void imprimir() {

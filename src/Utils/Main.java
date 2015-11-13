@@ -33,7 +33,6 @@ public class Main {
         System.out.println("Remover Variáveis Inúteis");
         linguagem.eliminarVariaveisInuteis();
         linguagem.imprimir();
-        System.exit(0);
 
         System.out.println("Remover Variáveis Inalcancáveis");
         linguagem.eliminarVariaveisInalcancaveis();

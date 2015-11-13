@@ -53,13 +53,13 @@ public class Arquivo {
             while (linha != null) {
                 String[] strProducao = linha.split(" ");
                 producao = new Producao();
-                producao.setCabeca(new Simbolo(true, strProducao[0].charAt(0)));
+                producao.setCabeca(new Simbolo(false, strProducao[0].charAt(0)));
 
                 corpo = new ArrayList<>();
                 strCorpo = strProducao[1];
                 strCorpo = strCorpo.replace("epsilon", "&");
                 for (int i = 0; i < strCorpo.length(); i++) {
-                    corpo.add(new Simbolo(linguagem.variaveisContains(strCorpo.charAt(i)), strCorpo.charAt(i)));
+                    corpo.add(new Simbolo(!linguagem.variaveisContains(strCorpo.charAt(i)), strCorpo.charAt(i)));
                 }
                 producao.setCorpo(corpo);
                 producoes.add(producao);

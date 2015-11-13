@@ -60,7 +60,7 @@ public class Producao {
             return true;
         }
         for (Simbolo simbolo : corpo) {
-            if (!simbolosTerminais.contains(simbolo)) {
+            if (!(simbolo.isTerminal() || simbolosTerminais.contains(simbolo))) {
                 return false;
             }
         }

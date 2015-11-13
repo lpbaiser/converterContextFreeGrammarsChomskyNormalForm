@@ -172,11 +172,22 @@ public class Linguagem {
 
     public void eliminarVariaveisInalcancaveis() {
         List<Producao> producoesAlcancaveis;
+        List<Producao> producoes;
+
         producoesAlcancaveis = new ArrayList<>();
-        producoesAlcancaveis.addAll(getProducoes(variavelIncial));
-        for (Producao producao : producoesAlcancaveis) {//runtime modification exception?
-            for (Simbolo simbolo : producao.getCorpo()) {//loop infinito A -> aA?
-                producoesAlcancaveis.addAll(getProducoes(simbolo));
+        producoes = getProducoes(variavelIncial);
+        if (producoes != null) {
+            producoesAlcancaveis.addAll(producoes);
+        }
+        for (int i = 0; i < producoesAlcancaveis.size(); i++) {
+            Producao producao = producoesAlcancaveis.get(i);
+            for (Simbolo simbolo : producao.getCorpo()) {
+                producoes = getProducoes(simbolo);
+                if (producoes != null) {
+                    if (!producoesAlcancaveis.containsAll(producoes)) {
+                        producoesAlcancaveis.addAll(producoes);
+                    }
+                }
             }
         }
         setProducoes(producoesAlcancaveis);
@@ -184,6 +195,9 @@ public class Linguagem {
     }
 
     private List<Producao> getProducoes(Simbolo simbolo) {
+        if (simbolo.isTerminal()) {
+            return null;
+        }
         List<Producao> producoes = new ArrayList<>();
         for (Producao producao : this.producoes) {
             if (producao.getCabeca().equals(simbolo)) {

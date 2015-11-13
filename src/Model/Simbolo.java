@@ -14,7 +14,7 @@ import java.util.List;
 public class Simbolo {
 
     private final boolean terminal;
-    private final char variavel;
+    private char variavel;
 
     public Simbolo(boolean terminal, char variavel) {
         this.terminal = terminal;
@@ -29,14 +29,29 @@ public class Simbolo {
         return variavel;
     }
     
-    public boolean isTerminal(List<Simbolo> simbolos){
+    public void setVariavel(char variavel){
+        this.variavel = variavel;
+    }
+
+    /**
+     * Dado uma produção, verifica se a variável deriva apenas símbolos
+     * terminais. Exemplo: cabeca.isTerminal(corpo)
+     *
+     * @param simbolos
+     * @return
+     */
+    public boolean isTerminal(List<Simbolo> simbolos) {
+        if (simbolos.size()>1){
+            return false;
+        }
         for (Simbolo simbolo : simbolos) {
-            if (simbolo.isTerminal()){
-                return false;
+            if (simbolo.isTerminal()) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
+    
 
     @Override
     public boolean equals(Object obj) {

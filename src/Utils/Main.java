@@ -18,7 +18,7 @@ public class Main {
 
         linguagem.imprimir();
         linguagem.eliminarProducoesUnitarias();
-        linguagem.imprimir();
+//        linguagem.imprimir();
     }
 
 }

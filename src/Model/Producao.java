@@ -24,19 +24,43 @@ public class Producao {
     /**
      * Realiza a indução através do parâmetro
      *
-     * @param simbolos todos os símbolos anuláveis. Constata se o corpo é
+     * @param simbolosAnulaveis todos os símbolos anuláveis. Constata se o corpo é
      * anulável, e realiza a indução
      * @return
      */
-    public boolean isAnulavel(List<Simbolo> simbolos) {
-        if (simbolos == null || simbolos.isEmpty()) {
+    public boolean isAnulavel(List<Simbolo> simbolosAnulaveis) {
+        if (simbolosAnulaveis == null || simbolosAnulaveis.isEmpty()) {
             return isAnulavel();
         }
         if (isAnulavel()) {
             return true;
         }
         for (Simbolo simbolo : corpo) {
-            if (!simbolos.contains(simbolo)) {
+            if (!simbolosAnulaveis.contains(simbolo)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isTerminal() {
+        for (Simbolo simbolo : corpo) {
+            if (!simbolo.isTerminal()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isTerminal(List<Simbolo> simbolosTerminais) {
+        if (simbolosTerminais == null || simbolosTerminais.isEmpty()) {
+            return isTerminal();
+        }
+        if (isTerminal()) {
+            return true;
+        }
+        for (Simbolo simbolo : corpo) {
+            if (!simbolosTerminais.contains(simbolo)) {
                 return false;
             }
         }

@@ -106,19 +106,17 @@ public class Linguagem {
     /**
      * Varre todas as produções a procura de símbolos terminais
      */
-    private void procuraSimbolosTerminais() {
-        List<Simbolo> simbolos;
+    private void atualizarSimbolosTerminais() {
         for (Producao producao : producoes) {
-            simbolos = producao.getCorpo();
-            if (producao.getCabeca().isTerminal(simbolos)) {
+            if (producao.isTerminal(simbolosTerminais)) {
                 if (!simbolosTerminais.contains(producao.getCabeca())) {
                     simbolosTerminais.add(producao.getCabeca());
                 }
             }
         }
     }
-    
-    private void procuraProducoesTerminais() {
+
+    private void procurarProducoesTerminais() {
         List<Simbolo> simbolos;
         for (Producao producao : producoes) {
             simbolos = producao.getCorpo();
@@ -129,10 +127,10 @@ public class Linguagem {
             }
         }
     }
-    
+
     public void eliminarProducoesUnitarias() {
         producoesSimbolosTerminais = new ArrayList<>();
-        procuraProducoesTerminais();
+        procurarProducoesTerminais();
         List<Simbolo> clone;
         for (Producao producao : producoes) {
             for (Producao producao1 : producoesSimbolosTerminais) {
@@ -141,7 +139,7 @@ public class Linguagem {
                     clone = producao.getCorpo();
                     for (Simbolo c : clone) {
 //                        if (c.getVariavel())
-                        
+
                     }
                 }
 
@@ -155,13 +153,19 @@ public class Linguagem {
      */
     public void eliminarVariaveisInuteis() {
         //surgem outras produções unitárias ao decorrer da etapa 2
+        //é preciso estabilizar, para inferir
         simbolosTerminais = new ArrayList<>();
-        procuraSimbolosTerminais();
+        int tamanhoAnterior;
+        do {
+            tamanhoAnterior = simbolosTerminais.size();
+            atualizarSimbolosTerminais();
+        } while (tamanhoAnterior < simbolosTerminais.size());
 
-        //não é preciso estabilizar, uma vez que não existem mais produções unitárias
-        for (Producao producao : producoes) {
+        for (int i = 0; i < producoes.size(); i++) {
+            Producao producao = producoes.get(i);
             if (!producao.isUtil(simbolosTerminais)) {
                 producoes.remove(producao);
+                i--;
             }
         }
     }
@@ -171,7 +175,7 @@ public class Linguagem {
         producoesAlcancaveis = new ArrayList<>();
         producoesAlcancaveis.addAll(getProducoes(variavelIncial));
         for (Producao producao : producoesAlcancaveis) {//runtime modification exception?
-            for (Simbolo simbolo : producao.getCorpo()) {//loop infinito A -> aA
+            for (Simbolo simbolo : producao.getCorpo()) {//loop infinito A -> aA?
                 producoesAlcancaveis.addAll(getProducoes(simbolo));
             }
         }

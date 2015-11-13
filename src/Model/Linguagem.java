@@ -44,10 +44,10 @@ public class Linguagem {
     public boolean variaveisContains(char simbolo) {
         for (Simbolo variavel : variaveis) {
             if (variavel.getVariavel() == simbolo) {
-                return false;//por exemplo D not is terminal
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public int qtdeProducoes(Producao p) {
@@ -260,10 +260,6 @@ public class Linguagem {
             atualizarSimbolosTerminais();
         } while (tamanhoAnterior < simbolosTerminais.size());
 
-        //não é preciso estabilizar, uma vez que não existem mais produções unitárias
-//            if (producao.getCorpo().containsAny(this.simbolosTerminais)) {
-//                variaveisUteis.add(producao.getCabeca());
-//            }
             for (int i = 0; i < producoes.size(); i++) {
                 Producao producao = producoes.get(i);
                 if (!producao.isUtil(simbolosTerminais)) {

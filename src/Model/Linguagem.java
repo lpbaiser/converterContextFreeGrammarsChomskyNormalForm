@@ -167,7 +167,8 @@ public class Linguagem {
         simbolosTerminais = new ArrayList<>();
         atualizarSimbolosTerminais();
         producoesSimbolosTerminais = new ArrayList<>();
-        atualizarSimbolosTerminais();
+        procurarProducoesTerminais();
+        
         listaProducoes = new ArrayList<>();
 
 //        System.out.println("Simbolos terminais");

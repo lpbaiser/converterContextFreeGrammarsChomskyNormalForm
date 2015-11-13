@@ -1,6 +1,7 @@
 
 A S B C D
 S
+B C
 C D
 C cCc
 C a
@@ -8,4 +9,3 @@ D d
 S AD
 A CA
 B bB
-B C

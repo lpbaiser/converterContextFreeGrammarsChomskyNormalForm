@@ -14,8 +14,7 @@ public class Linguagem {
     private List<Producao> producoes;
     private List<Simbolo> simbolosAnulaveis;
     private List<Simbolo> simbolosTerminais;
-    private List<Producao> producoesSimbolosTerminais;
-    private List<Producao> listaProducoes;
+    private List<Producao> producoesUnitarias;
 
     public List<Producao> getProducoes() {
         return producoes;
@@ -75,6 +74,29 @@ public class Linguagem {
     }
 
     /**
+     * Varre todas as produções a procura de símbolos terminais
+     */
+    private void atualizarSimbolosTerminais() {
+        for (Producao producao : producoes) {
+            if (producao.isTerminal(simbolosTerminais)) {
+                if (!simbolosTerminais.contains(producao.getCabeca())) {
+                    simbolosTerminais.add(producao.getCabeca());
+                }
+            }
+        }
+    }
+
+    public void atualizarProducoesUnitarias() {
+        for (Producao producao : producoes) {
+            if (producao.getCorpo().size() == 1 && !producao.getCorpo().get(0).isTerminal()) {
+                if (!producoesUnitarias.contains(producao)) {
+                    producoesUnitarias.add(producao);
+                }
+            }
+        }
+    }
+
+    /**
      * Procura os simbolos anuláveis até estabilizar Remove as produções vazias
      * Adiciona as produções que representam o epsilon
      */
@@ -115,136 +137,33 @@ public class Linguagem {
     }
 
     /**
-     * Varre todas as produções a procura de símbolos terminais
-     */
-    private void atualizarSimbolosTerminais() {
-        for (Producao producao : producoes) {
-            if (producao.isTerminal(simbolosTerminais)) {
-                if (!simbolosTerminais.contains(producao.getCabeca())) {
-                    simbolosTerminais.add(producao.getCabeca());
-                }
-            }
-        }
-    }
-
-    /**
-     * Varre todas as produções a procura de producoes que contenha símbolos
-     * terminais
-     */
-    private void procurarProducoesTerminais() {
-        List<Simbolo> simbolos;
-        for (Producao producao : producoes) {
-            for (Simbolo simbolo : simbolosTerminais) {
-                if (producao.contains(simbolo) && producao.getCabeca().getVariavel() != simbolo.getVariavel()) {
-                    producoesSimbolosTerminais.add(producao);
-                }
-            }
-//            simbolos = producao.getCorpo();
-//            if (producao.getCabeca().isTerminal(simbolos)) {
-//                if (!producoesSimbolosTerminais.contains(producao)) {
-//                    producoesSimbolosTerminais.add(producao);
-//                }
-//            }
-        }
-    }
-
-    public void buscaProducaoSimbolo(Simbolo s) {
-
-        for (Producao producao : producoes) {
-            if (producao.getCabeca().equals(s)) {
-                listaProducoes.add(producao);
-            }
-        }
-    }
-
-    /**
      * Procura produções que apontam para simbolos não terminais, verifica se
      * este símbolo não terminal está no List<Simbolo>, se estiver faz a troca
      * do símbolo não terminal pelo símbolo terminal e ao fim das iterações
      * remove as produções unitárias.
      */
     public void eliminarProducoesUnitarias() {
-        simbolosTerminais = new ArrayList<>();
-        atualizarSimbolosTerminais();
-        producoesSimbolosTerminais = new ArrayList<>();
-        procurarProducoesTerminais();
-        
-        listaProducoes = new ArrayList<>();
+        List<Producao> producoes;
+        Producao clone;
+        int tamanhoAnterior;
+        do {
+            producoesUnitarias = new ArrayList<>();
+            System.gc();
+            atualizarProducoesUnitarias();
+            tamanhoAnterior = producoesUnitarias.size();
 
-//        System.out.println("Simbolos terminais");
-//        for (Simbolo simbolo : simbolosTerminais) {
-//            System.out.println(simbolo.getVariavel());
-//            procurarProducoesTerminais();
-//            List<Simbolo> clone;
-//            for (Producao producao : producoes) {
-//                for (Producao producao1 : producoesSimbolosTerminais) {
-//                    if (producao.getCorpo().contains(producao1.getCabeca())) {
-//                        //trocar o simbolo terminal para o simbolo nao terminal
-//                        clone = producao.getCorpo();
-//                        for (Simbolo c : clone) {
-////                        if (c.getVariavel())
-//
-//                        }
-//                    }
-//
-//                }
-//                System.out.println("Producoes com simbolos terminais");
-//                for (Producao producao : producoesSimbolosTerminais) {
-//                    System.out.print(producao.getCabeca().getVariavel() + " -> ");
-//                    for (Simbolo simbolo : producao.getCorpo()) {
-//                        System.out.print(simbolo.getVariavel());
-//                    }
-//                    System.out.println();
-//                }
-        for (Simbolo simbolo : simbolosTerminais) {
-            for (Producao producao : producoesSimbolosTerminais) {
-                if (producao.contains(simbolo)) {
-                    //contém simbolo não terminal que produz um simbolo terminal
-                    //buscar todas a produçoes do simbolo
-                    buscaProducaoSimbolo(simbolo);
-                    //adicionar a lsita de producoes
+            for (Producao producaoUnitaria : producoesUnitarias) {//runtime modification exception
+                producoes = getProducoes(producaoUnitaria.getCorpo().get(0));
+                for (Producao producao : producoes) {
+                    clone = (Producao) producao.clone();
+                    clone.setCabeca((Simbolo) producaoUnitaria.getCabeca().clone());
+                    if (!clone.getCabeca().equals(clone.getCorpo().get(0)) && !this.producoes.contains(clone)) {
+                        this.producoes.add(clone);
+                    }
                 }
-
+                this.producoes.remove(producaoUnitaria);
             }
-
-        }
-
-//        System.out.println();
-//        for (Producao producao : novasProducoes) {
-//            System.out.print(producao.getCabeca().getVariavel() + " -> ");
-//            for (Simbolo simbolo : producao.getCorpo()) {
-//                System.out.print(simbolo.getVariavel());
-//            }
-//            System.out.println();
-//        }
-//            for (Producao producao1 : producoesSimbolosTerminais) {
-//                if (producao.contains(producao1.getCabeca())) {
-//                    clone = producao.getCorpo();
-//                    if (qtdeProducoes(producao) == 1 || clone.size() == 1) {
-//                        for (Simbolo c : clone) {
-//                            if (producao1.getCabeca().getVariavel() == c.getVariavel()) {
-//                                c.setVariavel(producao1.getCorpo().get(0).getVariavel());
-//                            }
-//                        }
-//                        producao.setCorpo(clone);
-//                    }
-////                    else {
-////                        Producao p = new Producao();
-////                        for (Simbolo c : clone) {
-////                            if (producao1.getCabeca().getVariavel() == c.getVariavel()) {
-////                                c.setVariavel(producao1.getCorpo().get(0).getVariavel());
-////                                p.setCabeca(producao.getCabeca());
-////                                p.setCorpo(clone);
-////                            }
-////                            cloneP.add(p);
-////                        }
-////                    }
-//                }
-//            }
-//
-//        }
-//       
-        producoes.removeAll(producoesSimbolosTerminais);
+        } while (tamanhoAnterior > 0);
     }
 
     /**
@@ -260,14 +179,14 @@ public class Linguagem {
             atualizarSimbolosTerminais();
         } while (tamanhoAnterior < simbolosTerminais.size());
 
-            for (int i = 0; i < producoes.size(); i++) {
-                Producao producao = producoes.get(i);
-                if (!producao.isUtil(simbolosTerminais)) {
-                    producoes.remove(producao);
-                    i--;
-                }
+        for (int i = 0; i < producoes.size(); i++) {
+            Producao producao = producoes.get(i);
+            if (!producao.isUtil(simbolosTerminais)) {
+                producoes.remove(producao);
+                i--;
             }
         }
+    }
 
     public void eliminarVariaveisInalcancaveis() {
         List<Producao> producoesAlcancaveis;
@@ -316,5 +235,4 @@ public class Linguagem {
             System.out.println();
         }
     }
-
 }

@@ -24,8 +24,8 @@ public class Producao {
     /**
      * Realiza a indução através do parâmetro
      *
-     * @param simbolosAnulaveis todos os símbolos anuláveis. Constata se o corpo é
-     * anulável, e realiza a indução
+     * @param simbolosAnulaveis todos os símbolos anuláveis. Constata se o corpo
+     * é anulável, e realiza a indução
      * @return
      */
     public boolean isAnulavel(List<Simbolo> simbolosAnulaveis) {
@@ -99,11 +99,9 @@ public class Producao {
         this.cabeca = cabeca;
     }
 
-    
     public boolean contains(Simbolo s) {
         for (Simbolo simbolo : corpo) {
             if (simbolo.getVariavel() == s.getVariavel()) {
-
                 return true;
 
             }
@@ -111,7 +109,6 @@ public class Producao {
 
         return false;
     }
-   
 
     @Override
     public Object clone() {
@@ -123,6 +120,24 @@ public class Producao {
         }
         producao.setCorpo(corpo);
         return producao;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Producao producao = (Producao) obj;
+        if (!producao.cabeca.equals(this.cabeca)) {
+            return false;
+        }
+        Simbolo simboloEntrada;
+        Simbolo simbolo;
+        for (int i = 0; i < producao.getCorpo().size(); i++) {
+            simboloEntrada = producao.getCorpo().get(i);
+            simbolo = this.getCorpo().get(i);
+            if (!simboloEntrada.equals(simbolo)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

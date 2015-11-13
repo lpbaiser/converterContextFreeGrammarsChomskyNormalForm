@@ -13,7 +13,7 @@ public class Main {
         Arquivo arquivo = new Arquivo();
         Linguagem linguagem;
 
-        linguagem = arquivo.FileRead("src/Entrada/ex7.6useless-a.txt");
+        linguagem = arquivo.FileRead("src/Entrada/ex7.6unit-e.txt");
 
         System.out.println("Gramática Livre de Contexto");
         System.out.println("Variável Inicial: " + linguagem.getVariavelIncial().getVariavel());

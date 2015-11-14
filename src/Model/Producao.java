@@ -83,6 +83,10 @@ public class Producao {
         return true;
     }
 
+    public boolean isUnitaria() {
+        return getCorpo().size() == 1 && !getCorpo().get(0).isTerminal();
+    }
+
     public Simbolo getCabeca() {
         return cabeca;
     }
@@ -103,19 +107,17 @@ public class Producao {
         for (Simbolo simbolo : corpo) {
             if (simbolo.getVariavel() == s.getVariavel()) {
                 return true;
-
             }
         }
-
         return false;
     }
 
     @Override
     public Object clone() {
         Producao producao = new Producao();
-        producao.setCabeca((Simbolo) cabeca.clone());
+        producao.setCabeca((Simbolo) getCabeca().clone());
         List<Simbolo> corpo = new ArrayList<>();
-        for (Simbolo simbolo : this.corpo) {
+        for (Simbolo simbolo : getCorpo()) {
             corpo.add((Simbolo) simbolo.clone());
         }
         producao.setCorpo(corpo);
@@ -125,14 +127,17 @@ public class Producao {
     @Override
     public boolean equals(Object obj) {
         Producao producao = (Producao) obj;
-        if (!producao.cabeca.equals(this.cabeca)) {
+        if (!getCabeca().equals(producao.getCabeca())) {
+            return false;
+        }
+        if (getCorpo().size() != producao.getCorpo().size()) {
             return false;
         }
         Simbolo simboloEntrada;
         Simbolo simbolo;
         for (int i = 0; i < producao.getCorpo().size(); i++) {
             simboloEntrada = producao.getCorpo().get(i);
-            simbolo = this.getCorpo().get(i);
+            simbolo = getCorpo().get(i);
             if (!simboloEntrada.equals(simbolo)) {
                 return false;
             }

@@ -49,16 +49,6 @@ public class Linguagem {
         return false;
     }
 
-    public int qtdeProducoes(Producao p) {
-        int qtde = 0;
-        for (Producao producao : producoes) {
-            if (producao.getCabeca().equals(p.getCabeca())) {
-                qtde++;
-            }
-        }
-        return qtde;
-    }
-
     /**
      * Varre todas as produções a procura de símbolos anuláveis
      */
@@ -88,7 +78,7 @@ public class Linguagem {
 
     public void atualizarProducoesUnitarias() {
         for (Producao producao : producoes) {
-            if (producao.getCorpo().size() == 1 && !producao.getCorpo().get(0).isTerminal()) {
+            if (producao.isUnitaria()) {
                 if (!producoesUnitarias.contains(producao)) {
                     producoesUnitarias.add(producao);
                 }
@@ -210,6 +200,16 @@ public class Linguagem {
         }
         setProducoes(producoesAlcancaveis);
         System.gc();
+    }
+
+    public int qtdeProducoes(Producao p) {
+        int qtde = 0;
+        for (Producao producao : producoes) {
+            if (producao.getCabeca().equals(p.getCabeca())) {
+                qtde++;
+            }
+        }
+        return qtde;
     }
 
     private List<Producao> getProducoes(Simbolo simbolo) {

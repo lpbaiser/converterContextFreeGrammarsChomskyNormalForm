@@ -133,6 +133,9 @@ public class Producao {
         if (getCorpo().size() != producao.getCorpo().size()) {
             return false;
         }
+
+//return getCorpo().containsAll(producao.getCorpo()) && producao.getCorpo().containsAll(getCorpo());
+//é mais eficiente fazer com o algoritmo seguinte
         Simbolo simboloEntrada;
         Simbolo simbolo;
         for (int i = 0; i < producao.getCorpo().size(); i++) {

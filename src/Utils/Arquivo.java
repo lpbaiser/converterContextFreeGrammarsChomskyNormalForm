@@ -34,9 +34,9 @@ public class Arquivo {
             linha = buffArquivo.readLine();
 
             String[] strVariaveis = linha.split(" ");
-            Simbolo[] variaveis = new Simbolo[strVariaveis.length];
+            List<Simbolo> variaveis = new ArrayList<>();
             for (int i = 0; i < strVariaveis.length; i++) {
-                variaveis[i] = new Simbolo(false, strVariaveis[i].charAt(0));
+                variaveis.add(new Simbolo(false, strVariaveis[i].charAt(0)));
             }
             linguagem.setVariaveis(variaveis);
 

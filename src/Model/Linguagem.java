@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -9,12 +10,13 @@ import java.util.List;
  */
 public class Linguagem {
 
-    private Simbolo[] variaveis; //cada posição do array contém uma letra do alfabeto
+    private List<Simbolo> variaveis; //cada posição do array contém uma letra do alfabeto
     private Simbolo variavelIncial;
     private List<Producao> producoes;
     private List<Simbolo> simbolosAnulaveis;
     private List<Simbolo> simbolosTerminais;
     private List<Producao> producoesUnitarias;
+    private List<Producao> newProducoes;
 
     public List<Producao> getProducoes() {
         return producoes;
@@ -24,11 +26,11 @@ public class Linguagem {
         this.producoes = producoes;
     }
 
-    public Simbolo[] getVariaveis() {
+    public List<Simbolo> getVariaveis() {
         return variaveis;
     }
 
-    public void setVariaveis(Simbolo[] variaveis) {
+    public void setVariaveis(List<Simbolo> variaveis) {
         this.variaveis = variaveis;
     }
 
@@ -202,6 +204,97 @@ public class Linguagem {
         System.gc();
     }
 
+    public void colocarFormaNormalChomsky() {
+        Producao p;
+        Producao newProducao;
+        Producao clone;
+        newProducoes = new ArrayList<>();
+        List<Simbolo> newSimbolos;
+        Simbolo simboloRandom;
+        /*
+        Procura produções com simbolos terminais e cria novas produções 
+        com os simboos terminais
+        */
+        for (Producao producao : producoes) {
+            if (producao.getCorpo().size() >= 2) {
+                simboloRandom = geraSimboloRandom();
+                for (Simbolo simbolo : producao.getCorpo()) {
+                    if (simbolo.isTerminal()) {
+                        newProducao = new Producao();
+                        newProducao.setCabeca(simboloRandom);
+                        newSimbolos = new ArrayList<>();
+                        newSimbolos.add(simbolo);
+                        newProducao.setCorpo(newSimbolos);
+                        if (!containsSimboloTerminal(simbolo)) {
+                            newProducoes.add(newProducao);
+                            this.variaveis.add(simboloRandom);
+                        }
+                        int index = producao.getCorpo().indexOf(simbolo);
+                        producao.getCorpo().set(index, newProducao.getCabeca());
+                    }
+                }
+            }
+        }
+        
+        //adiciona as novas produções na lista de produção
+        for (Producao producao : newProducoes) {
+            producoes.add(producao);
+        }
+
+        /*verifica se o corpo da produção é maior que dois
+          quebra este corpo produzindo produções com corpo de tamanho 2  
+        */
+        for (int i = 0; i < producoes.size(); i++) {
+            p = producoes.get(i);
+            
+            newSimbolos = new ArrayList<>();
+            List<Simbolo> simbolos = new ArrayList<>();
+            int pos = p.getCorpo().size() / 2;
+            simboloRandom = geraSimboloRandom();
+            if (p.getCorpo().size() > 2) {
+                newProducao = new Producao();
+                clone = (Producao) p.clone();
+                for (int j = 0; j <= pos; j++) {
+                    if (j <= pos) {
+                        newSimbolos.add(p.getCorpo().get(j));
+                    }
+                    
+                }
+                newProducao.setCabeca(simboloRandom);
+                newProducao.setCorpo(newSimbolos);
+                simbolos.add(newProducao.getCabeca());
+                pos++;
+                for (; pos < p.getCorpo().size() ; pos++) {
+                    simbolos.add(p.getCorpo().get(pos));
+                }
+                p.setCorpo(simbolos);
+                producoes.add(newProducao);
+            }
+        }
+        System.gc();
+    }
+
+    public boolean containsSimboloTerminal(Simbolo s) {
+        for (Producao producao : newProducoes) {
+            if (producao.getCorpo().get(0).getVariavel() == (s.getVariavel())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Simbolo geraSimboloRandom() {
+        Simbolo s;
+        Random gerador = new Random();
+        char charSimbolo;
+        do {
+            int numero = gerador.nextInt(25) + 65;//gera número 64 - 90 / A - Z
+            charSimbolo = (char) numero;
+            s = new Simbolo(false, charSimbolo);
+        } while (this.variaveis.contains(s));
+        return s;
+    }
+
     public int qtdeProducoes(Producao p) {
         int qtde = 0;
         for (Producao producao : producoes) {
@@ -226,7 +319,6 @@ public class Linguagem {
     }
 
     public void imprimir() {
-        System.out.println();
         for (Producao producao : producoes) {
             System.out.print(producao.getCabeca().getVariavel() + " -> ");
             for (Simbolo simbolo : producao.getCorpo()) {
@@ -234,5 +326,6 @@ public class Linguagem {
             }
             System.out.println();
         }
+        System.out.println();
     }
 }

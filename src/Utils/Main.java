@@ -13,7 +13,7 @@ public class Main {
         Arquivo arquivo = new Arquivo();
         Linguagem linguagem;
 
-        linguagem = arquivo.FileRead("src/Entrada/ex7.6unit-e.txt");
+        linguagem = arquivo.FileRead("src/Entrada/ex7.6lambda-a.txt");
 
         System.out.println("Gramática Livre de Contexto");
         System.out.println("Variável Inicial: " + linguagem.getVariavelIncial().getVariavel());
@@ -36,6 +36,10 @@ public class Main {
 
         System.out.println("Remover Variáveis Inalcancáveis");
         linguagem.eliminarVariaveisInalcancaveis();
+        linguagem.imprimir();
+
+        System.out.println("Colocar no Formato Normal de Chomsky");
+        linguagem.colocarFormaNormalChomsky();
         linguagem.imprimir();
     }
 

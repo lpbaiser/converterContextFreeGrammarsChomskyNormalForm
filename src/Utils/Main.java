@@ -38,7 +38,7 @@ public class Main {
         linguagem.eliminarVariaveisInalcancaveis();
         linguagem.imprimir();
 
-        System.out.println("Colocar no Formato Normal de Chomsky");
+        System.out.println("Colocar na Forma Normal de Chomsky");
         linguagem.colocarFormaNormalChomsky();
         linguagem.imprimir();
     }

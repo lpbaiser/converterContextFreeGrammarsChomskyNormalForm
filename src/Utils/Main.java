@@ -24,7 +24,7 @@ public class Main {
         arqExemplos.add("ex7.6useless-a.txt");
         arqExemplos.add("ex7.6useless-e.txt");
         arqExemplos.add("ex7.6cnf-a.txt");
-        arqExemplos.add("ex7.6cnf-e1.txt");
+        arqExemplos.add("ex7.6cnf-e.txt");
         
         int i = 0;
         System.out.println("Conversor de gramáticas livre de contexto \n "

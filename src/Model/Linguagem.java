@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
- *
- * @author leonardo
+ /*
+ * @author Leonardo Baiser <lpbaiser@gmail.com> & Romulo Meloca <rmolca@gmail.com>
+ * @since 02/11/2015
  */
 public class Linguagem {
 
@@ -205,17 +205,18 @@ public class Linguagem {
     }
 
     public void colocarFormaNormalChomsky() {
-        Producao p;
+        Producao producao;
         Producao newProducao;
-        Producao clone;
         newProducoes = new ArrayList<>();
         List<Simbolo> newSimbolos;
         Simbolo simboloRandom;
+        
         /*
-        Procura produções com simbolos terminais e cria novas produções 
-        com os simboos terminais
-        */
-        for (Producao producao : producoes) {
+         Procura produções com simbolos terminais e cria novas produções 
+         com os simboos terminais
+         */
+        for (int i = 0; i < producoes.size(); i++) {
+            producao = producoes.get(i);
             if (producao.getCorpo().size() >= 2) {
                 simboloRandom = geraSimboloRandom();
                 for (Simbolo simbolo : producao.getCorpo()) {
@@ -226,7 +227,7 @@ public class Linguagem {
                         newSimbolos.add(simbolo);
                         newProducao.setCorpo(newSimbolos);
                         if (!containsSimboloTerminal(simbolo)) {
-                            newProducoes.add(newProducao);
+                            producoes.add(newProducao);
                             this.variaveis.add(simboloRandom);
                         }
                         int index = producao.getCorpo().indexOf(simbolo);
@@ -235,47 +236,65 @@ public class Linguagem {
                 }
             }
         }
-        
-        //adiciona as novas produções na lista de produção
-        for (Producao producao : newProducoes) {
-            producoes.add(producao);
-        }
+        System.gc();
 
-        /*verifica se o corpo da produção é maior que dois
-          quebra este corpo produzindo produções com corpo de tamanho 2  
-        */
+        int qtdeIteracoes = 0;
+        do {
+            qtdeIteracoes = quebraProducoes();
+            qtdeIteracoes--;
+        } while (qtdeIteracoes > 0);
+
+    }
+
+    /* Verifica se o corpo da produção é maior que dois
+     quebra este corpo produzindo produções com corpo de tamanho 2  
+     */
+    public int quebraProducoes() {
+        Producao p;
+        Producao newProducao;
+        List<Simbolo> newSimbolos;
+        Simbolo simboloRandom;
+
+        int qtdeInteracoes = 0;
+
         for (int i = 0; i < producoes.size(); i++) {
             p = producoes.get(i);
-            
+
             newSimbolos = new ArrayList<>();
             List<Simbolo> simbolos = new ArrayList<>();
             int pos = p.getCorpo().size() / 2;
             simboloRandom = geraSimboloRandom();
             if (p.getCorpo().size() > 2) {
+
+                if (p.getCorpo().size() > 3) {
+                    qtdeInteracoes++;
+                }
+
                 newProducao = new Producao();
-                clone = (Producao) p.clone();
                 for (int j = 0; j <= pos; j++) {
                     if (j <= pos) {
                         newSimbolos.add(p.getCorpo().get(j));
                     }
-                    
+
                 }
                 newProducao.setCabeca(simboloRandom);
                 newProducao.setCorpo(newSimbolos);
                 simbolos.add(newProducao.getCabeca());
                 pos++;
-                for (; pos < p.getCorpo().size() ; pos++) {
+
+                for (; pos < p.getCorpo().size(); pos++) {
                     simbolos.add(p.getCorpo().get(pos));
                 }
+
                 p.setCorpo(simbolos);
                 producoes.add(newProducao);
             }
         }
-        System.gc();
+        return qtdeInteracoes;
     }
 
     public boolean containsSimboloTerminal(Simbolo s) {
-        for (Producao producao : newProducoes) {
+        for (Producao producao : producoes) {
             if (producao.getCorpo().get(0).getVariavel() == (s.getVariavel())) {
                 return true;
             }

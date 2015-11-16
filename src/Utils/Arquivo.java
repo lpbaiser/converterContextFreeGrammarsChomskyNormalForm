@@ -10,10 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Leonardo Baiser <lpbaiser@gmail.com>
- * @since
+ /*
+ * @author Leonardo Baiser <lpbaiser@gmail.com> & Romulo Meloca <rmolca@gmail.com>
+ * @since 02/11/2015
  */
 public class Arquivo {
 

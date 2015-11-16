@@ -1,0 +1,9 @@
+
+A S B
+S
+S aSb
+S aAb
+A aA
+A B
+B b
+B epsilon

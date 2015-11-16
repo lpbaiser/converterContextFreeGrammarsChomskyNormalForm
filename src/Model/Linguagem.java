@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
- /*
+/*
  * @author Leonardo Baiser <lpbaiser@gmail.com> & Romulo Meloca <rmolca@gmail.com>
  * @since 02/11/2015
  */
@@ -210,7 +210,7 @@ public class Linguagem {
         newProducoes = new ArrayList<>();
         List<Simbolo> newSimbolos;
         Simbolo simboloRandom;
-        
+
         /*
          Procura produções com simbolos terminais e cria novas produções 
          com os simboos terminais
@@ -224,18 +224,29 @@ public class Linguagem {
                         newProducao = new Producao();
                         newProducao.setCabeca(simboloRandom);
                         newSimbolos = new ArrayList<>();
-                        newSimbolos.add(simbolo);
+                        newSimbolos.add((Simbolo) simbolo.clone());
                         newProducao.setCorpo(newSimbolos);
                         if (!containsSimboloTerminal(simbolo)) {
-                            producoes.add(newProducao);
+                            int index = producao.getCorpo().indexOf(simbolo);
+                            producao.getCorpo().set(index, newProducao.getCabeca());
+                            newProducoes.add(newProducao);
                             this.variaveis.add(simboloRandom);
+                        } else {
+                            for (Producao p : newProducoes) {
+                                if (p.getCorpo().get(0).getVariavel() == simbolo.getVariavel()) {
+                                    int index = producao.getCorpo().indexOf(simbolo);
+                                    producao.getCorpo().set(index, p.getCabeca());
+                                }
+
+                            }
                         }
-                        int index = producao.getCorpo().indexOf(simbolo);
-                        producao.getCorpo().set(index, newProducao.getCabeca());
                     }
                 }
             }
         }
+
+        producoes.addAll(newProducoes);
+
         System.gc();
 
         int qtdeIteracoes = 0;
@@ -294,7 +305,7 @@ public class Linguagem {
     }
 
     public boolean containsSimboloTerminal(Simbolo s) {
-        for (Producao producao : producoes) {
+        for (Producao producao : newProducoes) {
             if (producao.getCorpo().get(0).getVariavel() == (s.getVariavel())) {
                 return true;
             }

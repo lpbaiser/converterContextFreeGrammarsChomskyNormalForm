@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
  /*
- * @author Leonardo Baiser <lpbaiser@gmail.com> & Romulo Meloca <rmolca@gmail.com>
+ * @author Leonardo Baiser <lpbaiser@gmail.com> & Romulo Meloca <rmeloca@gmail.com>
  * @since 02/11/2015
  */
 public class Producao {

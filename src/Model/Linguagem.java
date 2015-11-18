@@ -115,11 +115,12 @@ public class Linguagem {
                 producoes.remove(producao);
                 i--;
             } else {
-                for (Simbolo simbolo : producao.getCorpo()) {
+                for (int j = 0; j < producao.getCorpo().size(); j++) {
+                    Simbolo simbolo = producao.getCorpo().get(j);
                     if (simbolosAnulaveis.contains(simbolo)) {
                         clone = (Producao) producao.clone();
-                        clone.getCorpo().remove(simbolo);
-                        if (!clone.getCorpo().isEmpty()) {
+                        clone.getCorpo().remove(j);
+                        if (!clone.getCorpo().isEmpty() && !producoes.contains(clone)) {
                             producoes.add(clone);
                         }
                     }

@@ -16,7 +16,7 @@ public class Main {
         Arquivo arquivo = new Arquivo();
         Linguagem linguagem;
 
-        List<String> arqExemplos =  new ArrayList<String>();
+        List<String> arqExemplos = new ArrayList<>();
         arqExemplos.add("ex7.6lambda-a.txt");
         arqExemplos.add("ex7.6lambda-e.txt");
         arqExemplos.add("ex7.6unit-a.txt");
@@ -25,7 +25,7 @@ public class Main {
         arqExemplos.add("ex7.6useless-e.txt");
         arqExemplos.add("ex7.6cnf-a.txt");
         arqExemplos.add("ex7.6cnf-e.txt");
-        
+
         int i = 0;
         System.out.println("Conversor de gramáticas livre de contexto \n "
                 + "para gramática na forma normal de Chomsky");
@@ -39,7 +39,7 @@ public class Main {
             i = scanner.nextInt();
             if (i == 1) {
                 for (String arqExemplo : arqExemplos) {
-                    linguagem = arquivo.FileRead("src/Entrada/"+arqExemplo);
+                    linguagem = arquivo.FileRead(Main.class.getResource("/Entrada/" + arqExemplo).getFile());
                     System.out.println("GLC -> CFN");
                     System.out.println("Linguagem inicial");
                     linguagem.imprimir();
@@ -55,7 +55,7 @@ public class Main {
                 System.out.println("Digite o caminho do arquivo: ");
                 String caminho = scanner.next();
                 try {
-                    linguagem = arquivo.FileRead(Main.class.getResource(caminho).getFile());
+                    linguagem = arquivo.FileRead(caminho);
                     System.out.println("GLC -> CFN");
                     System.out.println("Linguagem inicial");
                     linguagem.imprimir();
